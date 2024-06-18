@@ -19,9 +19,9 @@ namespace SISTEMA_EVENTOS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<InscricaoVM>> Post(InscricaoDTO inscricaoDTO, DateOnly dateTime)
+        public async Task<ActionResult<InscricaoVM>> Post(InscricaoDTO inscricaoDTO)
         {
-            var novaInscricao = await _serviceInscricao.RealizarInscricaoAsync(inscricaoDTO, dateTime);
+            var novaInscricao = await _serviceInscricao.RealizarInscricaoAsync(inscricaoDTO);
             return CreatedAtAction(nameof(Get), new { id = novaInscricao.Id }, novaInscricao);
         }
 
