@@ -20,13 +20,13 @@ namespace SISTEMA_EVENTOS.MODEL.Services
             oRepositoryInscricao = new RepositoryBase<Inscricao>(context, true);
         }
 
-        public async Task<InscricaoVM> RealizarInscricaoAsync(InscricaoDTO inscricaoDTO)
+        public async Task<InscricaoVM> RealizarInscricaoAsync(InscricaoDTO inscricaoDTO, DateOnly dateOnly)
         {
             var inscricao = new Inscricao
             {
                 EventoId = inscricaoDTO.EventoId,
                 ParticipanteId = inscricaoDTO.ParticipanteId,
-                DataInscricao = DateTime.UtcNow.Date // Utiliza a data atual sem a parte do horário
+                DataInscricao = dateOnly
             };
 
             var novaInscricao = await oRepositoryInscricao.IncluirAsync(inscricao);
@@ -48,13 +48,13 @@ namespace SISTEMA_EVENTOS.MODEL.Services
 
         public async Task<List<InscricaoVM>> ObterInscricoesPorEventoAsync(int eventoId)
         {
-            var inscricoes = await oRepositoryInscricao.SelecionarOndeAsync(i => i.EventoId == eventoId);
+            var inscricoes = await oRepositoryInscricao.SelecionarChaveAsync();
             var inscricoesVM = new List<InscricaoVM>();
 
-            foreach (var inscricao in inscricoes)
-            {
-                inscricoesVM.Add(MapToInscricaoVM(inscricao));
-            }
+            //foreach (var inscricao in inscricoes)
+            //{
+            //    inscricoesVM.Add(MapToInscricaoVM(inscricao));
+            //}
 
             return inscricoesVM;
         }
@@ -66,7 +66,7 @@ namespace SISTEMA_EVENTOS.MODEL.Services
                 Id = inscricao.Id,
                 EventoId = inscricao.EventoId,
                 ParticipanteId = inscricao.ParticipanteId,
-                DataInscricao = inscricao.DataInscricao,
+                //DataInscricao = inscricao.DataInscricao
                 // Mapear outras propriedades necessárias da InscricaoVM
             };
         }
